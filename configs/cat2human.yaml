@@ -1,0 +1,73 @@
+# Copyright (C) 2018 NVIDIA Corporation.  All rights reserved.
+# Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
+
+# logger options
+image_save_iter: 100          # How often do you want to save output images during training
+image_display_iter: 100       # How often do you want to display output images during training
+display_size: 8               # How many images do you want to display each time == batch_size
+snapshot_save_iter: 10000     # How often do you want to save trained models
+log_iter: 1                   # How often do you want to log the training stats
+
+# optimization options
+max_iter: 10000000            # maximum number of training iterations
+batch_size: 8                 # batch size
+weight_decay: 0.0001          # weight decay
+beta1: 0.5                    # Adam parameter
+beta2: 0.999                  # Adam parameter
+init: kaiming                 # initialization [gaussian/kaiming/xavier/orthogonal]
+lr: 0.0001                    # initial learning rate
+lr_policy: step               # learning rate scheduler
+step_size: 100000             # how often to decay learning rate
+gamma: 0.5                    # how much to decay learning rate
+
+# loss weights
+loss_weights:
+  gan_w: 5                      # weight of adversarial loss
+  emb_w: 1                      # weight of embedding adversarial loss
+  recon_x_w: 5                 # weight of image reconstruction loss
+  recon_s_w: 1                  # weight of style reconstruction loss
+  recon_c_w: 1                  # weight of content reconstruction loss
+  recon_x_cyc_w: 10             # weight of explicit style augmented cycle consistency loss
+  vgg_w: 0.5                      # weight of domain-invariant perceptual loss
+  sem_w: 1                      # weight of semantic segmentation loss
+
+# model options
+gen:
+  dim: 32                     # number of filters in the bottommost layer
+  mlp_dim: 128                # number of filters in MLP
+  style_dim: 8                # length of style code
+  n_style_conv: 4             # number of layers in style encoder
+  activ: relu                 # activation function [relu/lrelu/prelu/selu/tanh]
+  n_downsample: 2             # number of downsampling layers in encoder
+  n_upsample: 2               # number of upsampling layers in decoder
+  input_dim: 3                # number of image channels [1/3]
+  exfoliate_mode: select      # mode of exfoliate [select/weighted]
+  dilation: 1                 # number of dilation in convMod
+  demod: 1                    # whether to use demod [1/0] for [use/not_use]
+  norm: in                    # normalization layer for common conv [none/bn/in/ln/pn]
+  res_norm: adain             # normalization layer for resBlock [none/bn/in/ln/pn]
+  n_res: 4                    # number of residual blocks in content encoder/decoder
+  pad_type: reflect           # padding type [zero/reflect]
+  vgg_name: vgg11             # padding type [zero/reflect]
+  output_height: 256          # make sure it is as the same size of
+  num_classes: 8              # number of semantic classes
+dis:
+  dim: 32                     # number of filters in the bottommost layer
+  norm: none                  # normalization layer [none/bn/in/ln]
+  activ: lrelu                # activation function [relu/lrelu/prelu/selu/tanh]
+  n_layer: 4                  # number of layers in D
+  gan_type: lsgan             # GAN loss [lsgan/nsgan]
+  num_scales: 3               # number of scales
+  pad_type: reflect           # padding type [zero/reflect]
+
+# data options
+input_dim_a: 3                              # number of image channels [1/3]
+input_dim_b: 3                              # number of image channels [1/3]
+num_workers: 0                              # number of data loading threads
+new_size: 256                               # first resize the shortest image side to this size
+new_size_a: 256                             # first resize the shortest image side to this size
+new_size_b: 256                             # first resize the shortest image side to this size
+crop_image_height: 256                      # random crop image of this height
+crop_image_width: 256                       # random crop image of this width
+data_root: /home/lyf/repo/dataset/StyleI2I/StyleI2I/cat2human2/                # dataset folder location
+semantic_root: /home/lyf/repo/dataset/StyleI2I/StyleI2I/cat2human2_sem/        # dataset folder location
